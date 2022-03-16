@@ -2,11 +2,23 @@
 
 ## User Requirements
 
-- User should be able to List, create, update and delete posts
-- User should be to perform pagination and sorting on posts
-- User should be able to create, update and delete thier comments
-- User should be able to register
-- User should be able to login
+### Admin:
+
+- Admin can add a supplier.
+- Admin can add a customer
+- Admin can advice supplier to supply skus
+
+
+### Customer:
+- Customer can view details about each sku
+- Customer can retrieve a list of all available skus paginated
+- Customer can make an order
+
+
+### Supplier:
+- Supplier can add sku
+- Supplier can delete his own sku
+
 
 
 ## Technolgy Stack
