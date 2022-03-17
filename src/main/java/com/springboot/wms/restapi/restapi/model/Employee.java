@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -24,9 +25,6 @@ public class Employee {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-//    @Column(name = "roleID", nullable = false)
-//    private Long roleID;
-
     @Column(name = "firstName", nullable = false)
     private String firstName;
 
@@ -39,6 +37,6 @@ public class Employee {
     @Column(name = "number", nullable = false)
     private String number;
 
-    //@OneToMany(mappedBy = "employee")
-    //private List<Role> roles;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Role> roles;
 }
