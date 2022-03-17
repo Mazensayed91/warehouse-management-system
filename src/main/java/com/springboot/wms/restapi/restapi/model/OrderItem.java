@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +15,7 @@ import java.util.Set;
         name = "orders",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})}
 )
-public class Order {
+public class OrderItem {
 
     @Id
     @Column(name = "ID")
@@ -25,17 +24,10 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="employeeID")
-    private Employee employee;
+    @JoinColumn(name="orderID")
+    private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="customerID")
-    private Customer customer;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> orderItems;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orderDetailsID", referencedColumnName = "id")
-    private OrderDetails orderDetails;
+    @JoinColumn(name="skuID")
+    private Sku sku;
 }

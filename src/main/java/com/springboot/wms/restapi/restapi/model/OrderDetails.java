@@ -3,6 +3,7 @@ package com.springboot.wms.restapi.restapi.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 
@@ -27,4 +28,8 @@ public class OrderDetails {
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orderID", referencedColumnName = "id")
+    private Order order;
 }

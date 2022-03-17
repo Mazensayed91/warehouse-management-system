@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -36,5 +37,16 @@ public class Sku {
 
     @Column(name = "length", nullable = false)
     private double length;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="loadItemID")
+    private LoadItem loadItem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="supplierID")
+    private Supplier supplier;
+
+    @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderItem> orderItems;
 
 }
