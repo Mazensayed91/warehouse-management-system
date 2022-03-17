@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -22,6 +24,37 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto createEmployee(EmployeeDto employeeDto){
         // convert DTO to entity
+        Employee employee = mapToEntity(employeeDto);
+
+        Employee newEmployee = employeeRepository.save(employee);
+
+        // convert saved entity to DTO
+        EmployeeDto employeeResponse;
+
+        employeeResponse = mapToDto(newEmployee);
+
+        return employeeResponse;
+    }
+
+    @Override
+    public List<EmployeeDto> getEmployees(){
+        return employeeRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+    private EmployeeDto mapToDto(Employee employee){
+        EmployeeDto employeeDto = new EmployeeDto();
+
+        employeeDto.setId(employee.getId());
+        employeeDto.setFirstName(employee.getFirstName());
+        employeeDto.setLastName(employee.getLastName());
+        employeeDto.setNumber(employee.getNumber());
+        employeeDto.setAddress(employee.getAddress());
+
+        return employeeDto;
+    }
+
+    private Employee mapToEntity(EmployeeDto employeeDto){
+
         Employee employee = new Employee();
 
         employee.setFirstName(employeeDto.getFirstName());
@@ -29,17 +62,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setNumber(employeeDto.getNumber());
         employee.setAddress(employeeDto.getAddress());
 
-        Employee newEmployee = employeeRepository.save(employee);
-
-        // convert saved entity to DTO
-        EmployeeDto employeeResponse = new EmployeeDto();
-
-        employeeResponse.setId(newEmployee.getId());
-        employeeResponse.setFirstName(newEmployee.getFirstName());
-        employeeResponse.setLastName(newEmployee.getLastName());
-        employeeResponse.setNumber(newEmployee.getNumber());
-        employeeResponse.setAddress(newEmployee.getAddress());
-
-        return employeeResponse;
+        return employee;
     }
 }
