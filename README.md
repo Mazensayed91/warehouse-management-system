@@ -36,3 +36,8 @@
 - Post
 - Comment
 - User
+
+## Database
+
+![image](https://user-images.githubusercontent.com/54520113/158747283-db01205a-68ed-45a1-bff7-de800e41b5cd.png)
+
