@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -30,7 +31,18 @@ public class Role {
     private String description;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="employeeID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employeeID", referencedColumnName = "id")
     private Employee employee;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "supplierID", referencedColumnName = "id")
+    private Supplier supplier;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerID", referencedColumnName = "id")
+    private Customer customer;
+
+    @ManyToMany
+    private Set<Permission> permissions;
 }

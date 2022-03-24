@@ -13,8 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "orders",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})}
+        name = "orders"
 )
 public class Order {
 
@@ -33,7 +32,7 @@ public class Order {
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> orderItems;
+    private Set<OrderLine> orderLines;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderDetailsID", referencedColumnName = "id")

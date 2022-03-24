@@ -3,9 +3,9 @@ package com.springboot.wms.restapi.restapi.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +13,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(
-        name = "orderdetails"
+        name = "inventories"
 )
-public class OrderDetails {
+public class Inventory {
 
     @Id
     @Column(name = "ID")
@@ -23,18 +23,19 @@ public class OrderDetails {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Column(name = "price", nullable = false)
-    private double price;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "inventoryUnitDetailsID", referencedColumnName = "id")
+    private Inventory inventoryUnitDetails;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orderID", referencedColumnName = "id")
-    private Order order;
+    @JoinColumn(name = "orderLineID", referencedColumnName = "id")
+    private OrderLine orderLine;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "purchaseID", referencedColumnName = "id")
-    private Purchase purchase;
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Sku> skus;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "discountID", referencedColumnName = "id")
-    private Discount discount;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="loadUnitID")
+    private LoadUnit loadUnit;
+
 }

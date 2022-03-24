@@ -1,6 +1,7 @@
 package com.springboot.wms.restapi.restapi.service.impl;
 
 import com.springboot.wms.restapi.restapi.dto.EmployeeDto;
+import com.springboot.wms.restapi.restapi.model.ContactPerson;
 import com.springboot.wms.restapi.restapi.model.Employee;
 import com.springboot.wms.restapi.restapi.repository.EmployeeRepository;
 import com.springboot.wms.restapi.restapi.service.EmployeeService;
@@ -45,10 +46,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeDto employeeDto = new EmployeeDto();
 
         employeeDto.setId(employee.getId());
-        employeeDto.setFirstName(employee.getFirstName());
-        employeeDto.setLastName(employee.getLastName());
-        employeeDto.setNumber(employee.getNumber());
-        employeeDto.setAddress(employee.getAddress());
+        employeeDto.setFirstName(employee.getContactPerson().getFirstName());
+        employeeDto.setLastName(employee.getContactPerson().getLastName());
+        employeeDto.setNumber(employee.getContactPerson().getNumber());
+        employeeDto.setAddress(employee.getContactPerson().getAddress());
 
         return employeeDto;
     }
@@ -56,11 +57,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     private Employee mapToEntity(EmployeeDto employeeDto){
 
         Employee employee = new Employee();
+        ContactPerson contactPerson = new ContactPerson() ;
+        contactPerson.setFirstName(employeeDto.getFirstName());
+        contactPerson.setLastName(employeeDto.getLastName());
+        contactPerson.setAddress(employeeDto.getAddress());
+        contactPerson.setNumber(employeeDto.getNumber());
 
-        employee.setFirstName(employeeDto.getFirstName());
-        employee.setLastName(employeeDto.getLastName());
-        employee.setNumber(employeeDto.getNumber());
-        employee.setAddress(employeeDto.getAddress());
+        employee.setContactPerson(contactPerson);
 
         return employee;
     }

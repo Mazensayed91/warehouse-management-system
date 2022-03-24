@@ -25,21 +25,13 @@ public class Employee {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Column(name = "firstName", nullable = false)
-    private String firstName;
-
-    @Column(name = "lastName", nullable = false)
-    private String lastName;
-
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @Column(name = "number", nullable = false)
-    private String number;
-
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Role> roles;
+    @Embedded
+    private ContactPerson contactPerson;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Order> orders;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roleID", referencedColumnName = "id")
+    private Role role;
 }

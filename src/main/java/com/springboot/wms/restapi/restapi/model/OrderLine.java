@@ -13,9 +13,9 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "customers"
+        name = "orderlines"
 )
-public class Customer {
+public class OrderLine {
 
     @Id
     @Column(name = "ID")
@@ -23,13 +23,19 @@ public class Customer {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Embedded
-    private ContactPerson contactPerson;
+    @Column(name = "unitPrice", nullable = false)
+    private double unitPrice;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Order> orders;
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="orderID")
+    private Order order;
+
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleID", referencedColumnName = "id")
-    private Role role;
+    @JoinColumn(name = "orderLineID", referencedColumnName = "id")
+    private OrderLine orderLine;
+
 }

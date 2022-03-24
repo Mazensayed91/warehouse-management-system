@@ -12,10 +12,11 @@ import java.util.Set;
 @NoArgsConstructor
 
 @Entity
-@Table(
-        name = "customers"
-)
-public class Customer {
+@Table
+//        (
+//        name = "load_unit_type_capacities"
+//)
+public class LoadUnitTypeCapacity {
 
     @Id
     @Column(name = "ID")
@@ -23,13 +24,15 @@ public class Customer {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Embedded
-    private ContactPerson contactPerson;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Order> orders;
+    @Column(name = "capacity", nullable = false)
+    private int capacity;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleID", referencedColumnName = "id")
-    private Role role;
+    @JoinColumn(name = "sku_ID", referencedColumnName = "id")
+    private Sku sku;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="load_UnitTypeID")
+    private LoadUnitType loadUnitType;
+
 }

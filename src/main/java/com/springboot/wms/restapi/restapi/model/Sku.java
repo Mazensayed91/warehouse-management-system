@@ -13,9 +13,11 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "skus"
+        name = Sku.TABLE_NAME
 )
 public class Sku {
+
+    static final String TABLE_NAME = "SKU";
 
     @Id
     @Column(name = "ID")
@@ -23,30 +25,26 @@ public class Sku {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Column(name = "price", nullable = false)
-    private double price;
-
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
-
-    @Column(name = "height", nullable = false)
-    private double height;
-
-    @Column(name = "width", nullable = false)
-    private double width;
-
-    @Column(name = "length", nullable = false)
-    private double length;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="loadItemID")
-    private LoadItem loadItem;
+    @JoinColumn(name="inventoryID")
+    private Inventory inventory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="supplierID")
-    private Supplier supplier;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "categoryID", referencedColumnName = "id")
+    private Category category;
 
-    @OneToMany(mappedBy = "sku", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderItem> orderItems;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "loadUnitTypeCapacityID", referencedColumnName = "id")
+    private LoadUnitTypeCapacity loadUnitTypeCapacity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "adviceLineID", referencedColumnName = "id")
+    private AdviceLine adviceLine;
+
+
+
 
 }

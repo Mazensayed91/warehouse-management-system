@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "customers"
+        name = "packagetypes"
 )
-public class Customer {
+public class PackageType {
 
     @Id
     @Column(name = "ID")
@@ -23,13 +22,18 @@ public class Customer {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Embedded
-    private ContactPerson contactPerson;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Order> orders;
+    @Embedded
+    private Dimensions dimensions;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleID", referencedColumnName = "id")
-    private Role role;
+    @JoinColumn(name = "inventoryUnitDetailsID", referencedColumnName = "id")
+    private InventoryUnitDetails inventoryUnitDetails;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "adviceLineUnitDetailsID", referencedColumnName = "id")
+    private AdviceLineUnitDetails adviceLineUnitDetailsID;
+
 }

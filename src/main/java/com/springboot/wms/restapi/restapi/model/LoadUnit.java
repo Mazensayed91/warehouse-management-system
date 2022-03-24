@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -12,9 +13,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(
-        name = "loaditems"
+        name = "loadunit"
 )
-public class LoadItem {
+public class LoadUnit {
 
     @Id
     @Column(name = "ID")
@@ -22,24 +23,17 @@ public class LoadItem {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Column(name = "type", nullable = false)
-    private String type;
-
-    @Column(name = "height", nullable = false)
-    private double height;
-
-    @Column(name = "width", nullable = false)
-    private double width;
-
-    @Column(name = "length", nullable = false)
-    private double length;
-
     @Column(name = "columnNumber", nullable = false)
     private int columnNumber;
 
     @Column(name = "rowNumber", nullable = false)
     private int rowNumber;
 
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
+    @OneToMany(mappedBy = "loadUnit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Inventory> inventories;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "loadUnitTypeID", referencedColumnName = "id")
+    private LoadUnitType loadUnitType;
+
 }

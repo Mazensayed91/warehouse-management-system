@@ -13,9 +13,10 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "customers"
+        name = "permissions",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})}
 )
-public class Customer {
+public class Permission {
 
     @Id
     @Column(name = "ID")
@@ -23,13 +24,15 @@ public class Customer {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Embedded
-    private ContactPerson contactPerson;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Order> orders;
+    @Column(name = "description", nullable = false)
+    private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleID", referencedColumnName = "id")
-    private Role role;
+    @Column(name = "active", nullable = false)
+    private boolean active;
+
+    @ManyToMany
+    private Set<Role> roles;
 }

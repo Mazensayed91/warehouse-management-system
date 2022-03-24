@@ -13,9 +13,9 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "customers"
+        name = "loadunittypes"
 )
-public class Customer {
+public class LoadUnitType {
 
     @Id
     @Column(name = "ID")
@@ -23,13 +23,17 @@ public class Customer {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Embedded
-    private ContactPerson contactPerson;
+    @Column(name = "type", nullable = false)
+    private String type;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Order> orders;
+    @Embedded
+    private Dimensions dimensions;
+
+    @OneToMany(mappedBy = "loadUnitType", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<LoadUnitTypeCapacity> loadUnitTypeCapacities;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleID", referencedColumnName = "id")
-    private Role role;
+    @JoinColumn(name = "loadUnitID", referencedColumnName = "id")
+    private LoadUnit loadUnit;
+
 }

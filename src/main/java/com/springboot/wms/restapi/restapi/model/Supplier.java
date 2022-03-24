@@ -23,18 +23,13 @@ public class Supplier {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Column(name = "firstName", nullable = false)
-    private String firstName;
-
-    @Column(name = "lastName", nullable = false)
-    private String lastName;
-
-    @Column(name = "address", nullable = false)
-    private String address;
-
-    @Column(name = "number", nullable = false)
-    private String number;
+    @Embedded
+    private ContactPerson contactPerson;
 
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Sku> skus;
+    private Set<Advice> advices;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roleID", referencedColumnName = "id")
+    private Role role;
 }

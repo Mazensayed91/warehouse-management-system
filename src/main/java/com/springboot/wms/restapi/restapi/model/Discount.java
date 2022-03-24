@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -12,10 +13,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(
-        name = "orders",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})}
+        name = "discount"
 )
-public class OrderItem {
+public class Discount {
 
     @Id
     @Column(name = "ID")
@@ -23,11 +23,10 @@ public class OrderItem {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="orderID")
-    private Order order;
+    @Column(name = "discountPercentage", nullable = false)
+    private int discountPercentage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="skuID")
-    private Sku sku;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orderDetailsID", referencedColumnName = "id")
+    private OrderDetails orderDetails;
 }
