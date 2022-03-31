@@ -1,7 +1,7 @@
 package com.springboot.wms.restapi.restapi.service.impl;
 
-import com.springboot.wms.restapi.restapi.dto.RoleDto;
-import com.springboot.wms.restapi.restapi.repository.RoleRepository;
+import com.springboot.wms.restapi.restapi.Role.RoleDto;
+import com.springboot.wms.restapi.restapi.Role.RoleRepository;
 import com.springboot.wms.restapi.restapi.service.RoleService;
 import org.springframework.stereotype.Service;
 

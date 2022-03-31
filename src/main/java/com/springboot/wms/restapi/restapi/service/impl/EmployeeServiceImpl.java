@@ -1,11 +1,10 @@
 package com.springboot.wms.restapi.restapi.service.impl;
 
-import com.springboot.wms.restapi.restapi.dto.EmployeeDto;
-import com.springboot.wms.restapi.restapi.model.ContactPerson;
-import com.springboot.wms.restapi.restapi.model.Employee;
-import com.springboot.wms.restapi.restapi.repository.EmployeeRepository;
+import com.springboot.wms.restapi.restapi.Employee.EmployeeDto;
+import com.springboot.wms.restapi.restapi.ContactPerson.ContactPerson;
+import com.springboot.wms.restapi.restapi.Employee.Employee;
+import com.springboot.wms.restapi.restapi.Employee.EmployeeRepository;
 import com.springboot.wms.restapi.restapi.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -46,10 +45,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeDto employeeDto = new EmployeeDto();
 
         employeeDto.setId(employee.getId());
-        employeeDto.setFirstName(employee.getContactPerson().getFirstName());
-        employeeDto.setLastName(employee.getContactPerson().getLastName());
-        employeeDto.setNumber(employee.getContactPerson().getNumber());
-        employeeDto.setAddress(employee.getContactPerson().getAddress());
+        employeeDto.setFirst_name(employee.getContact_person().getFirst_name());
+        employeeDto.setLast_name(employee.getContact_person().getLast_name());
+        employeeDto.setNumber(employee.getContact_person().getNumber());
+        employeeDto.setAddress(employee.getContact_person().getAddress());
 
         return employeeDto;
     }
@@ -58,12 +57,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = new Employee();
         ContactPerson contactPerson = new ContactPerson() ;
-        contactPerson.setFirstName(employeeDto.getFirstName());
-        contactPerson.setLastName(employeeDto.getLastName());
+        contactPerson.setFirst_name(employeeDto.getFirst_name());
+        contactPerson.setLast_name(employeeDto.getLast_name());
         contactPerson.setAddress(employeeDto.getAddress());
         contactPerson.setNumber(employeeDto.getNumber());
 
-        employee.setContactPerson(contactPerson);
+        employee.setContact_person(contactPerson);
 
         return employee;
     }

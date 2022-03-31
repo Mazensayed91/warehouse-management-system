@@ -1,6 +1,6 @@
 package com.springboot.wms.restapi.restapi.service;
 
-import com.springboot.wms.restapi.restapi.dto.EmployeeDto;
+import com.springboot.wms.restapi.restapi.Employee.EmployeeDto;
 
 import java.util.List;
 
