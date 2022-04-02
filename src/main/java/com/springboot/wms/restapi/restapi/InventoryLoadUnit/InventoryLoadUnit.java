@@ -15,12 +15,12 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(
-        name = "inventoryunitdetails"
+        name = "inventory_load_units"
 )
 public class InventoryLoadUnit {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "id_Sequence")
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
@@ -30,11 +30,11 @@ public class InventoryLoadUnit {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="inventoryID")
+    @JoinColumn(name="inventory_id")
     private Inventory inventory;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="loadUnitID")
-    private LoadUnit loadUnit;
+    @JoinColumn(name="load_unit_id")
+    private LoadUnit load_unit;
 
 }

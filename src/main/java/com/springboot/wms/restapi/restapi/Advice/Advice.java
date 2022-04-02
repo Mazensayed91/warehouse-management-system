@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -49,7 +50,7 @@ public class Advice {
     private Status status;
 
     @OneToMany(mappedBy = "advice", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AdviceLine> adviceLines;
+    private Set<AdviceLine> adviceLines = new HashSet<>();
 
 
     @ManyToOne(fetch = FetchType.LAZY)

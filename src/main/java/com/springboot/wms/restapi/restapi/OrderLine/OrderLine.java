@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -40,7 +41,7 @@ public class OrderLine {
     private Order order;
 
     @OneToMany(mappedBy = "order_line", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderLineLoadUnit> order_line_load_units;
+    private Set<OrderLineLoadUnit> order_line_load_units = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sku_quantity_unit_id", referencedColumnName = "id")

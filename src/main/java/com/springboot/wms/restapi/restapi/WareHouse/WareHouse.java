@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -41,5 +42,5 @@ public class WareHouse {
     private Dimensions dimensions;
 
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Area> areas;
+    private Set<Area> areas = new HashSet<>();
 }

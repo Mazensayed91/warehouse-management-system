@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "loadunittypes"
+        name = "load_unit_types"
 )
 public class LoadUnitType {
 
@@ -32,7 +33,7 @@ public class LoadUnitType {
     private Dimensions dimensions;
 
     @OneToMany(mappedBy = "load_unit_type", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<LoadUnit> load_units;
+    private Set<LoadUnit> load_units = new HashSet<>();
 
 
 }

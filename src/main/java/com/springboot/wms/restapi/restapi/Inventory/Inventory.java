@@ -1,5 +1,6 @@
 package com.springboot.wms.restapi.restapi.Inventory;
 
+import com.springboot.wms.restapi.restapi.Order.Order;
 import com.springboot.wms.restapi.restapi.SkuQuantityUnit.SkuQuantityUnit;
 import com.springboot.wms.restapi.restapi.InventoryLoadUnit.InventoryLoadUnit;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -25,11 +27,12 @@ public class Inventory {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<SkuQuantityUnit> skuQuantityUnits;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="sku_quantity_units_id")
+    private SkuQuantityUnit sku_quantity_unit;
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<InventoryLoadUnit> inventoryUnits;
+    private Set<InventoryLoadUnit> inventory_units = new HashSet<>();
 
 
 }

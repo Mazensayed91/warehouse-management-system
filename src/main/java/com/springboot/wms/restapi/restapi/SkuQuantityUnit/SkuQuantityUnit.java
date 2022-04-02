@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -53,7 +54,7 @@ public class SkuQuantityUnit {
 
 
     @OneToMany(mappedBy = "sku_quantity_unit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Inventory> inventories;
+    private Set<Inventory> inventories = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sku_id")

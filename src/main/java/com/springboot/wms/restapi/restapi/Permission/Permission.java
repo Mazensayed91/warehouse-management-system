@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -14,8 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "permissions",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})}
+        name = "permissions"
 )
 public class Permission {
 
@@ -35,5 +35,5 @@ public class Permission {
     private boolean is_active;
 
     @ManyToMany
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 }

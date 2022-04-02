@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -17,8 +18,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "roles",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})}
+        name = "roles"
 )
 public class Role {
 
@@ -38,14 +38,14 @@ public class Role {
     private boolean is_active;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Customer> customers;
+    private Set<Customer> customers = new HashSet<>();
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Employee> employees;
+    private Set<Employee> employees = new HashSet<>();
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Supplier> supplier;
+    private Set<Supplier> suppliers = new HashSet<>();
 
     @ManyToMany
-    private Set<Permission> permissions;
+    private Set<Permission> permissions = new HashSet<>();
 }

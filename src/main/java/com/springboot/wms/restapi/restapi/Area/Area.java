@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -41,8 +42,8 @@ public class Area {
     @Embedded
     private Dimensions dimensions;
 
-    @OneToMany(mappedBy = "aisle", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Aisle> aisles;
+    @OneToMany(mappedBy = "area", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Aisle> aisles = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ware_house_id", referencedColumnName = "id")

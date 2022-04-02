@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -36,7 +37,7 @@ public class AdviceLine {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "expire_date", nullable = false)
     private Date expire_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,7 +45,7 @@ public class AdviceLine {
     private Advice advice;
 
     @OneToMany(mappedBy = "advice_line", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AdviceLineLoadUnit> advice_line_load_units;
+    private Set<AdviceLineLoadUnit> advice_line_load_units = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sku_quantity_unit_id", referencedColumnName = "id")

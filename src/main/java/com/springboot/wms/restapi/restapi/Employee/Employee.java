@@ -16,8 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "employees",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"number"})}
+        name = "employees"
 )
 public class Employee {
 
@@ -29,9 +28,6 @@ public class Employee {
 
     @Embedded
     private ContactPerson contact_person;
-
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Order> orders;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

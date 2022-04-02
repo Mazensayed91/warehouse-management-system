@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -29,13 +30,13 @@ public class LoadUnit {
     private Long id;
 
     @OneToMany(mappedBy = "load_unit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<InventoryLoadUnit> inventory_load_units;
+    private Set<InventoryLoadUnit> inventory_load_units = new HashSet<>();
 
     @OneToMany(mappedBy = "load_unit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AdviceLineLoadUnit> advice_line_load_unit_id;
+    private Set<AdviceLineLoadUnit> advice_line_load_unit_id = new HashSet<>();
 
     @OneToMany(mappedBy = "load_unit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderLineLoadUnit> order_line_load_unit_id;
+    private Set<OrderLineLoadUnit> order_line_load_unit_id = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "load_unit_type_id", referencedColumnName = "id")

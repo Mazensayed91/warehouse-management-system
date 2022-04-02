@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -29,7 +30,7 @@ public class Aisle {
     private String status;
 
     @OneToMany(mappedBy = "aisle", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Rack> racks;
+    private Set<Rack> racks = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "area_id", referencedColumnName = "id")

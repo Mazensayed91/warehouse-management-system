@@ -17,7 +17,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("select max(e.id) from Employee e")
     public Long findMaxId();
 
-    public List<Employee> findByOrders_OrderLines_SkuQuantityUnit_Name(String sku_name);
+    //public List<Employee> findByOrders_OrderLines_SkuQuantityUnit_Name(String sku_name);
 
 
 }
