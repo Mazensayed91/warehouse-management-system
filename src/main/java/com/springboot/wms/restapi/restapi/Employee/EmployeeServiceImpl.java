@@ -1,10 +1,10 @@
-package com.springboot.wms.restapi.restapi.service.impl;
+package com.springboot.wms.restapi.restapi.Employee;
 
 import com.springboot.wms.restapi.restapi.Employee.EmployeeDto;
 import com.springboot.wms.restapi.restapi.ContactPerson.ContactPerson;
 import com.springboot.wms.restapi.restapi.Employee.Employee;
 import com.springboot.wms.restapi.restapi.Employee.EmployeeRepository;
-import com.springboot.wms.restapi.restapi.service.EmployeeService;
+import com.springboot.wms.restapi.restapi.Employee.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

@@ -1,6 +1,5 @@
 package com.springboot.wms.restapi.restapi.Employee;
 
-import com.springboot.wms.restapi.restapi.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

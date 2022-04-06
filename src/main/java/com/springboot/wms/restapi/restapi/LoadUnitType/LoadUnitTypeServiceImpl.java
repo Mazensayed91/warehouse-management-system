@@ -1,20 +1,9 @@
 package com.springboot.wms.restapi.restapi.LoadUnitType;
 
-import com.springboot.wms.restapi.restapi.ContactPerson.ContactPerson;
 import com.springboot.wms.restapi.restapi.Dimensions.Dimensions;
-import com.springboot.wms.restapi.restapi.Employee.Employee;
-import com.springboot.wms.restapi.restapi.Employee.EmployeeDto;
-import com.springboot.wms.restapi.restapi.Employee.EmployeeRepository;
-import com.springboot.wms.restapi.restapi.LoadUnit.LoadUnit;
-import com.springboot.wms.restapi.restapi.LoadUnit.LoadUnitDto;
-import com.springboot.wms.restapi.restapi.LoadUnit.LoadUnitRepository;
-import com.springboot.wms.restapi.restapi.LoadUnit.LoadUnitService;
-import com.springboot.wms.restapi.restapi.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LoadUnitTypeServiceImpl implements LoadUnitTypeService {

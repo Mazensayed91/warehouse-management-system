@@ -1,4 +1,4 @@
-package com.springboot.wms.restapi.restapi.service;
+package com.springboot.wms.restapi.restapi.Employee;
 
 import com.springboot.wms.restapi.restapi.Employee.EmployeeDto;
 
