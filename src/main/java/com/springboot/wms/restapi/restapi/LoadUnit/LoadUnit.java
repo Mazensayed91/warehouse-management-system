@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "load_unit"
+        name = "load_units"
 )
 public class LoadUnit {
 
@@ -40,10 +40,10 @@ public class LoadUnit {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "load_unit_type_id", referencedColumnName = "id")
-    private LoadUnitType load_unit_type;
+    private LoadUnitType load_unit_type = null;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rack", referencedColumnName = "id")
-    private Rack rack;
+    private Rack rack = null;
 
 }
