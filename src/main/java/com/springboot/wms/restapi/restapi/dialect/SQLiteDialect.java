@@ -5,11 +5,21 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.hibernate.type.StringType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.sql.Types;
 
 public class SQLiteDialect extends Dialect {
+
+
     public SQLiteDialect() {
+
         registerColumnType(Types.BIT, "integer");
         registerColumnType(Types.TINYINT, "tinyint");
         registerColumnType(Types.SMALLINT, "smallint");
@@ -44,7 +54,7 @@ public class SQLiteDialect extends Dialect {
     }
 
     public boolean hasDataTypeInIdentityColumn() {
-        return false;
+        return true;
     }
 
     public String getIdentityColumnString() {
@@ -132,4 +142,5 @@ public class SQLiteDialect extends Dialect {
     public boolean supportsCascadeDelete() {
         return false;
     }
+
 }
