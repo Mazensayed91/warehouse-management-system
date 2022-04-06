@@ -38,32 +38,16 @@ public class LoadUnitServiceImpl implements LoadUnitService {
     public LoadUnitDto createLoadUnit(long loadUnitTypeId, LoadUnitDto loadUnitDto){
         // convert DTO to entity
         LoadUnit loadUnit = mapToEntity(loadUnitDto);
-        System.out.println("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
         // retrieve load unit type by id
         LoadUnitType loadUnitType = loadUnitTypeRepository.findById(loadUnitTypeId).orElseThrow(
                 () -> new ConfigDataResourceNotFoundException(new ConfigDataResource() {
                 }, new Throwable())
         );
-        System.out.println("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee2");
-
-//        LoadUnitType loadUnitType = new LoadUnitType();
-//        loadUnitType.setName("Hi");
-//        long x = 3;
-//        loadUnitType.setId(x);
-//        Dimensions dim = new Dimensions();
-//        dim.setWidth(3);
-//        dim.setLength(3);
-//        dim.setHeight(4);
-//        loadUnitType.setDimensions(dim);
-//
         loadUnit.setLoad_unit_type(loadUnitType);
 
         // create entity to DB
-        System.out.println("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee3");
-        System.out.println(loadUnitTypeRepository.toString());
-        System.out.println("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee3");
         LoadUnit newLoadUnit = loadUnitRepository.save(loadUnit);
-        System.out.println("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee4");
 
         return mapToDto(newLoadUnit);
     }

@@ -32,8 +32,5 @@ public class Permission {
     private String description;
 
     @Column(name = "active", nullable = false)
-    private boolean is_active;
-
-    @ManyToMany
-    private Set<Role> roles = new HashSet<>();
+    private boolean active;
 }

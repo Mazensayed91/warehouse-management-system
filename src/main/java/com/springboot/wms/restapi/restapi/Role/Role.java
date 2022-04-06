@@ -34,7 +34,7 @@ public class Role {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "is_active", nullable = false)
+    @Column(name = "is_active")
     private boolean is_active;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
