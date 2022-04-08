@@ -45,10 +45,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeDto employeeDto = new EmployeeDto();
 
         employeeDto.setId(employee.getId());
-        employeeDto.setFirst_name(employee.getContact_person().getFirst_name());
-        employeeDto.setLast_name(employee.getContact_person().getLast_name());
-        employeeDto.setNumber(employee.getContact_person().getNumber());
-        employeeDto.setAddress(employee.getContact_person().getAddress());
+        employeeDto.setFirst_name(employee.getContactPerson().getFirst_name());
+        employeeDto.setLast_name(employee.getContactPerson().getLast_name());
+        employeeDto.setNumber(employee.getContactPerson().getNumber());
+        employeeDto.setAddress(employee.getContactPerson().getAddress());
 
         return employeeDto;
     }
@@ -62,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         contactPerson.setAddress(employeeDto.getAddress());
         contactPerson.setNumber(employeeDto.getNumber());
 
-        employee.setContact_person(contactPerson);
+        employee.setContactPerson(contactPerson);
 
         return employee;
     }

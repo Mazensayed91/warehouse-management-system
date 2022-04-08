@@ -33,7 +33,7 @@ public class Supplier {
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Advice> advices = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
+    private Set<Role> role = new HashSet<>();
 }

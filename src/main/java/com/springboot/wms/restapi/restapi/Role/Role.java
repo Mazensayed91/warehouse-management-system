@@ -37,13 +37,16 @@ public class Role {
     @Column(name = "is_active")
     private boolean is_active;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Set<Customer> customers = new HashSet<>();
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private Set<Supplier> suppliers = new HashSet<>();
 
     @ManyToMany

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -27,11 +28,11 @@ public class Employee {
     private Long id;
 
     @Embedded
-    private ContactPerson contact_person;
+    private ContactPerson contactPerson;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
+    private Set<Role> role = new HashSet<>();
 
 }

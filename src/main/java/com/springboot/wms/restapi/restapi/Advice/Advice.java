@@ -25,7 +25,7 @@ import java.util.Set;
 public class Advice {
 
     public enum Status {
-        ORDERED, RECEIVED, IN_PROGRESS, REJECTED, FINISHED;
+        RECEIVED, IN_PROGRESS, REJECTED, FINISHED;
     }
 
     @Id
@@ -36,9 +36,6 @@ public class Advice {
 
     @Column(name = "sub_total", nullable = false)
     private BigDecimal sub_total;
-
-    @Column(name = "tax", nullable = false)
-    private BigDecimal tax;
 
     @Column(name = "discount", nullable = false)
     private BigDecimal discount;
