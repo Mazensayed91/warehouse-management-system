@@ -51,7 +51,7 @@ public class RoleServiceImpl implements RoleService {
         roleDto.setId(role.getId());
         roleDto.setTitle(role.getTitle());
         roleDto.setDescription(role.getDescription());
-        roleDto.setPermissions_ids(role.getPermissions().stream().map(permission -> permission.getId()).collect(Collectors.toSet()));
+        roleDto.setPermissions_ids(role.getPermissions().stream().map(Permission::getId).collect(Collectors.toSet()));
 
         return roleDto;
     }
