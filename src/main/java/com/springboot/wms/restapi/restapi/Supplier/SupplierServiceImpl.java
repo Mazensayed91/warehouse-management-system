@@ -45,25 +45,11 @@ public class SupplierServiceImpl implements SupplierService {
         SupplierDto supplierDto = new SupplierDto();
 
         supplierDto.setId(supplier.getId());
-        supplierDto.setFirst_name(supplier.getContactPerson().getFirst_name());
-        supplierDto.setLast_name(supplier.getContactPerson().getLast_name());
-        supplierDto.setNumber(supplier.getContactPerson().getNumber());
-        supplierDto.setAddress(supplier.getContactPerson().getAddress());
 
         return supplierDto;
     }
 
     private Supplier mapToEntity(SupplierDto supplierDto){
-
-        Supplier supplier = new Supplier();
-        ContactPerson contactPerson = new ContactPerson() ;
-        contactPerson.setFirst_name(supplierDto.getFirst_name());
-        contactPerson.setLast_name(supplierDto.getLast_name());
-        contactPerson.setAddress(supplierDto.getAddress());
-        contactPerson.setNumber(supplierDto.getNumber());
-
-        supplier.setContactPerson(contactPerson);
-
-        return supplier;
+        return new Supplier();
     }
 }

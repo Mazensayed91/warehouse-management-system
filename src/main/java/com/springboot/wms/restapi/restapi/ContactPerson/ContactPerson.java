@@ -26,4 +26,10 @@ public class ContactPerson {
 
     @Column(name = "number", nullable = false)
     private String number;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 }

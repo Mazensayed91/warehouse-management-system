@@ -42,28 +42,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private EmployeeDto mapToDto(Employee employee){
-        EmployeeDto employeeDto = new EmployeeDto();
 
+        EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId(employee.getId());
-        employeeDto.setFirst_name(employee.getContactPerson().getFirst_name());
-        employeeDto.setLast_name(employee.getContactPerson().getLast_name());
-        employeeDto.setNumber(employee.getContactPerson().getNumber());
-        employeeDto.setAddress(employee.getContactPerson().getAddress());
 
         return employeeDto;
     }
 
     private Employee mapToEntity(EmployeeDto employeeDto){
-
-        Employee employee = new Employee();
-        ContactPerson contactPerson = new ContactPerson() ;
-        contactPerson.setFirst_name(employeeDto.getFirst_name());
-        contactPerson.setLast_name(employeeDto.getLast_name());
-        contactPerson.setAddress(employeeDto.getAddress());
-        contactPerson.setNumber(employeeDto.getNumber());
-
-        employee.setContactPerson(contactPerson);
-
-        return employee;
+        return new Employee();
     }
 }

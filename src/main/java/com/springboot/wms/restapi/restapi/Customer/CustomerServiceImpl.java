@@ -45,25 +45,12 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerDto customerDto = new CustomerDto();
 
         customerDto.setId(customer.getId());
-        customerDto.setFirst_name(customer.getContactPerson().getFirst_name());
-        customerDto.setLast_name(customer.getContactPerson().getLast_name());
-        customerDto.setNumber(customer.getContactPerson().getNumber());
-        customerDto.setAddress(customer.getContactPerson().getAddress());
 
         return customerDto;
     }
 
     private Customer mapToEntity(CustomerDto customerDto){
 
-        Customer customer = new Customer();
-        ContactPerson contactPerson = new ContactPerson() ;
-        contactPerson.setFirst_name(customerDto.getFirst_name());
-        contactPerson.setLast_name(customerDto.getLast_name());
-        contactPerson.setAddress(customerDto.getAddress());
-        contactPerson.setNumber(customerDto.getNumber());
-
-        customer.setContactPerson(contactPerson);
-
-        return customer;
+        return new Customer();
     }
 }

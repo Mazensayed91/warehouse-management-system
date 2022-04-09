@@ -27,13 +27,6 @@ public class Supplier {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
-    @Embedded
-    private ContactPerson contactPerson;
-
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Advice> advices = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Set<Role> role = new HashSet<>();
 }
