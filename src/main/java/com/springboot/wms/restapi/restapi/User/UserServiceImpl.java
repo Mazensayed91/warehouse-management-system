@@ -5,7 +5,6 @@ import com.springboot.wms.restapi.restapi.Customer.CustomerController;
 import com.springboot.wms.restapi.restapi.Customer.CustomerDto;
 import com.springboot.wms.restapi.restapi.Employee.EmployeeController;
 import com.springboot.wms.restapi.restapi.Employee.EmployeeDto;
-import com.springboot.wms.restapi.restapi.Permission.Permission;
 import com.springboot.wms.restapi.restapi.Role.Role;
 import com.springboot.wms.restapi.restapi.Role.RoleRepository;
 import com.springboot.wms.restapi.restapi.Supplier.*;
@@ -31,8 +30,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
     private SupplierController supplierController;
+
+    @Autowired
     private CustomerController customerController;
+
+    @Autowired
     private EmployeeController employeeController;
 
     @Autowired
@@ -59,12 +63,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private enum ROLES_WITH_TABLES {
-        IS_EMPLOYEE, IS_CUSTOMER, IS_SUPPLIER;
+        EMPLOYEE, CUSTOMER, SUPPLIER;
     }
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository){
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+                           SupplierController supplierController, CustomerController customerController,
+                           EmployeeController employeeController){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.supplierController = supplierController;
+        this.customerController = customerController;
+        this.employeeController = employeeController;
+
     }
 
     @Transactional
@@ -88,15 +98,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         // add record in different user table based on role
         user.getRoles().forEach((role) -> {
-            if(role.getTitle().equals(ROLES_WITH_TABLES.IS_SUPPLIER.name())) {
+            if(role.getTitle().equals(ROLES_WITH_TABLES.SUPPLIER.name())) {
                 SupplierDto supplierDto = new SupplierDto();
                 supplierDto.setId(user.getId());
                 supplierController.createSupplier(supplierDto);
-            }else if(role.getTitle().equals(ROLES_WITH_TABLES.IS_CUSTOMER.name())){
+            }else if(role.getTitle().equals(ROLES_WITH_TABLES.CUSTOMER.name())){
                 CustomerDto customerDto = new CustomerDto();
                 customerDto.setId(user.getId());
                 customerController.createCustomer(customerDto);
-            }else if(role.getTitle().equals(ROLES_WITH_TABLES.IS_EMPLOYEE.name())){
+            }else if(role.getTitle().equals(ROLES_WITH_TABLES.EMPLOYEE.name())){
                 EmployeeDto employeeDto = new EmployeeDto();
                 employeeDto.setId(user.getId());
                 employeeController.createEmployee(employeeDto);
