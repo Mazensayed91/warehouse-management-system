@@ -48,6 +48,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/role/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/users/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/users/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/sku_quantity_unit/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/load_units_type_sku_qu/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/load_units_types/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/sku/**").permitAll();
+
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/advices/**").hasAnyAuthority("ROLE_SUPPLIER");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
