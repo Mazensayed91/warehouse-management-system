@@ -37,7 +37,7 @@ public class AdviceLine {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Column(name = "expire_date", nullable = false)
+    @Column(name = "expire_date")
     private Date expire_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
