@@ -3,21 +3,23 @@ package com.springboot.wms.restapi.restapi.Advice;
 import com.springboot.wms.restapi.restapi.AdviceLine.AdviceLine;
 import com.springboot.wms.restapi.restapi.Employee.Employee;
 import com.springboot.wms.restapi.restapi.Supplier.Supplier;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 
-@Data
+@Setter
+@Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(
         name = "advices"
@@ -46,8 +48,9 @@ public class Advice {
     @Enumerated(EnumType.ORDINAL)
     private Status status;
 
-    @OneToMany(mappedBy = "advice", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AdviceLine> adviceLines = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "advice", cascade = CascadeType.MERGE, orphanRemoval = true)
+    @Fetch(value= FetchMode.SELECT)
+    private List<AdviceLine> adviceLines;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

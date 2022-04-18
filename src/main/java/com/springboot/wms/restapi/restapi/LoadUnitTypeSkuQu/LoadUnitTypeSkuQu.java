@@ -33,10 +33,10 @@ public class LoadUnitTypeSkuQu {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sku_quantity_unit_id")
-    private SkuQuantityUnit sku_quantity_unit;
+    private SkuQuantityUnit skuQuantityUnit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="load_unit_type_id")
-    private LoadUnitType load_unit_type;
+    private LoadUnitType loadUnitType;
 
 }

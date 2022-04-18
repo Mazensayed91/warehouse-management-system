@@ -28,7 +28,6 @@ public class InventoryLoadUnit {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="inventory_id")
     private Inventory inventory;

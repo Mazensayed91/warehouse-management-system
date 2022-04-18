@@ -74,7 +74,7 @@ public class LoadUnitTypeServiceSkuQuImpl implements LoadUnitTypeSkuQuService {
                 }, new Throwable())
         );
 
-        loadUnitTypeSkuQu.setLoad_unit_type(loadUnitType);
+        loadUnitTypeSkuQu.setLoadUnitType(loadUnitType);
 
 
         SkuQuantityUnit skuQuantityUnit = skuQuantityUnitRepository.findById(loadUnitTypeSkuQuDto.getSku_quantity_unit_id()).orElseThrow(
@@ -82,7 +82,7 @@ public class LoadUnitTypeServiceSkuQuImpl implements LoadUnitTypeSkuQuService {
                 }, new Throwable())
         );
 
-        loadUnitTypeSkuQu.setSku_quantity_unit(skuQuantityUnit);
+        loadUnitTypeSkuQu.setSkuQuantityUnit(skuQuantityUnit);
 
 
         loadUnitTypeSkuQu.setOrientation(loadUnitTypeSkuQuDto.getOrientation());

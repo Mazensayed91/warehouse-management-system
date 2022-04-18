@@ -53,7 +53,7 @@ public class SkuQuantityUnit {
     private OrderLine order_line;
 
 
-    @OneToMany(mappedBy = "sku_quantity_unit", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "skuQuantityUnit", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Inventory> inventories = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

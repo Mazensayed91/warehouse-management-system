@@ -3,19 +3,20 @@ package com.springboot.wms.restapi.restapi.AdviceLine;
 import com.springboot.wms.restapi.restapi.Advice.Advice;
 import com.springboot.wms.restapi.restapi.AdviceLineLoadUnit.AdviceLineLoadUnit;
 import com.springboot.wms.restapi.restapi.SkuQuantityUnit.SkuQuantityUnit;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(
         name = "advice_lines"
@@ -40,14 +41,15 @@ public class AdviceLine {
     @Column(name = "expire_date")
     private Date expire_date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Fetch(value= FetchMode.SELECT)
     @JoinColumn(name="advice_id")
     private Advice advice;
 
-    @OneToMany(mappedBy = "advice_line", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "adviceLine", cascade = CascadeType.MERGE, orphanRemoval = true)
     private Set<AdviceLineLoadUnit> advice_line_load_units = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "sku_quantity_unit_id", referencedColumnName = "id")
     private SkuQuantityUnit sku_quantity_unit;
 }

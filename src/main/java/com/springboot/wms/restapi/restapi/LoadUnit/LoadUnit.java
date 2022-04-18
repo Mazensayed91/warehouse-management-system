@@ -32,7 +32,7 @@ public class LoadUnit {
     @OneToMany(mappedBy = "load_unit", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<InventoryLoadUnit> inventory_load_units = new HashSet<>();
 
-    @OneToMany(mappedBy = "load_unit", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "loadUnit", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AdviceLineLoadUnit> advice_line_load_unit_id = new HashSet<>();
 
     @OneToMany(mappedBy = "load_unit", cascade = CascadeType.ALL, orphanRemoval = true)

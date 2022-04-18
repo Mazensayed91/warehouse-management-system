@@ -28,12 +28,12 @@ public class AdviceLineLoadUnit {
     private int available_quantity;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "advice_line_id", referencedColumnName = "id")
-    private AdviceLine advice_line;
+    private AdviceLine adviceLine;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "load_unit_id", referencedColumnName = "id")
-    private LoadUnit load_unit;
+    private LoadUnit loadUnit;
 
 }
