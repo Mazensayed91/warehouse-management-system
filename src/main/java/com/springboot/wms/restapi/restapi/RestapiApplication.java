@@ -15,7 +15,6 @@ public class RestapiApplication {
 		SpringApplication.run(RestapiApplication.class, args);
 	}
 
-
 	@Bean
 	PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();

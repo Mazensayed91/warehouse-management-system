@@ -26,8 +26,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -134,6 +136,7 @@ public class AdviceServiceImpl implements AdviceService {
             adviceRepository.save(advice);
             if(!Objects.isNull(advice.getAdviceLines())) {
                 advice.getAdviceLines().forEach(adviceLine -> {
+                    AtomicBoolean is_inventory_filled_for_this_advice_line = new AtomicBoolean(false);
                     AtomicInteger adviceLineQuantity = new AtomicInteger(adviceLine.getQuantity());
                     System.out.println("hhhhhhhhh" + adviceLineQuantity.get());
                     loadUnitRepository.findAll().forEach(loadUnit -> {
@@ -169,12 +172,21 @@ public class AdviceServiceImpl implements AdviceService {
                                 adviceLine.getExpire_date(),
                                 advice.getSupplier(),
                                 adviceLine.getSku_quantity_unit());
-                        if(!Objects.isNull(inventory)){
+                        log.info("Null or No:");
+                        log.info(String.valueOf(!Objects.isNull(inventory)));
+                        if(!Objects.isNull(inventory) && !is_inventory_filled_for_this_advice_line.get()){
+                            is_inventory_filled_for_this_advice_line.set(true);
+                            log.info("Value of count global" + inventory.getCount_global());
+                            log.info("Value of quantity count" + adviceLine.getQuantity());
+                            log.info("Value of count: " + (inventory.getCount_global() + adviceLine.getQuantity()));
                             inventory.setCount_global(inventory.getCount_global()+adviceLine.getQuantity());
+                            log.info("Value of count2: " + (inventory.getCount_global()));
+                            inventoryRepository.save(inventory);
+
                         }
                         // if not there, create one
-                        else{
-
+                        else if (!is_inventory_filled_for_this_advice_line.get()){
+                            is_inventory_filled_for_this_advice_line.set(true);
                             inventory = new Inventory();
                             inventory.setExpireDate(adviceLine.getExpire_date());
                             inventory.setSupplier(advice.getSupplier());
@@ -187,9 +199,15 @@ public class AdviceServiceImpl implements AdviceService {
                         InventoryLoadUnit inventoryLoadUnit = new InventoryLoadUnit();
                         inventoryLoadUnit.setInventory(inventory);
                         inventoryLoadUnit.setLoad_unit(loadUnit);
+                        inventoryLoadUnit.setPrice(new BigDecimal(3));
+
+                        inventoryLoadUnitRepository.save(inventoryLoadUnit);
                     });
+
                 });
+
             }
+
         });
 
 

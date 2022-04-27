@@ -33,7 +33,7 @@ public class Inventory {
     private Date expireDate;
 
     @Column(name = "count_global")
-    private int count_global;
+    private int count_global = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="sku_quantity_unit_id")

@@ -52,6 +52,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/load_units_type_sku_qu/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/load_units_types/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/sku/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/swagger-ui.html/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll();
+
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
 
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/advices/**").hasAnyAuthority("ROLE_SUPPLIER");
         http.authorizeRequests().anyRequest().authenticated();
