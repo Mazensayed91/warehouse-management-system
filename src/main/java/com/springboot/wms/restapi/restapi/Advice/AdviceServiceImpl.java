@@ -6,6 +6,7 @@ import com.springboot.wms.restapi.restapi.Inventory.Inventory;
 import com.springboot.wms.restapi.restapi.Inventory.InventoryRepository;
 import com.springboot.wms.restapi.restapi.InventoryLoadUnit.InventoryLoadUnit;
 import com.springboot.wms.restapi.restapi.InventoryLoadUnit.InventoryLoadUnitRepository;
+import com.springboot.wms.restapi.restapi.LoadUnit.LoadUnit;
 import com.springboot.wms.restapi.restapi.LoadUnitTypeSkuQu.LoadUnitTypeSkuQu;
 import com.springboot.wms.restapi.restapi.LoadUnitTypeSkuQu.LoadUnitTypeSkuQuRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -128,89 +130,109 @@ public class AdviceServiceImpl implements AdviceService {
         //Set<Advice> inProgressAdvices = new HashSet<>();
 
         adviceRepository.findByStatus(Advice.Status.IN_PROGRESS).forEach(adviceID -> {
-            System.out.println("advice id"+ adviceID);
+
             Advice advice = adviceRepository.findById(adviceID).orElseThrow(
                     () -> new ConfigDataResourceNotFoundException(new ConfigDataResource() {
                     }, new Throwable()));
+            // change advice status
             advice.setStatus(Advice.Status.RECEIVED);
             adviceRepository.save(advice);
+
             if(!Objects.isNull(advice.getAdviceLines())) {
                 advice.getAdviceLines().forEach(adviceLine -> {
+
                     AtomicBoolean is_inventory_filled_for_this_advice_line = new AtomicBoolean(false);
                     AtomicInteger adviceLineQuantity = new AtomicInteger(adviceLine.getQuantity());
-                    System.out.println("hhhhhhhhh" + adviceLineQuantity.get());
+
                     loadUnitRepository.findAll().forEach(loadUnit -> {
                         LoadUnitTypeSkuQu loadUnitTypeSkuQu = loadUnitTypeSkuQuRepository.findBySkuQuantityUnitIdAndLoadUnitTypeId(
                                 adviceLine.getSku_quantity_unit().getId(), loadUnit.getLoad_unit_type().getId());
-                        System.out.println("hh" + adviceLineQuantity.get());
-                        System.out.println(loadUnitTypeSkuQu.getQuantity());
 
                         // check if this load unit type can hold 1 or more sku qu unit
                         if (loadUnitTypeSkuQu.getQuantity() > 0 && adviceLineQuantity.get() > 0) {
-                            AdviceLineLoadUnit adviceLineLoadUnit = new AdviceLineLoadUnit();
-                            adviceLineLoadUnit.setAdviceLine(adviceLine);
-                            adviceLineLoadUnit.setLoadUnit(loadUnit);
-                            System.out.println(loadUnitTypeSkuQu.getQuantity());
-
-                            if (loadUnitTypeSkuQu.getQuantity() > adviceLineQuantity.get()) {
-                                adviceLineLoadUnit.setAvailable_quantity(adviceLineQuantity.get());
-                            } else {
-                                adviceLineLoadUnit.setAvailable_quantity(loadUnitTypeSkuQu.getQuantity());
-                                System.out.println(loadUnitTypeSkuQu.getQuantity());
-                            }
-                            System.out.println(3);
-
-                            adviceLineLoadUnitRepository.save(adviceLineLoadUnit);
+                            createAdviceLineLoadUnit(loadUnit, loadUnitTypeSkuQu, adviceLineQuantity);
                             System.out.println(4);
-
+                            // update advice line quantity (as some skuqus are saved in the proper load units)
                             adviceLineQuantity.addAndGet(-loadUnitTypeSkuQu.getQuantity());
                         }
 
                         // fill inventory
                         // first check if inventory item is there, if it is then increment count_global
                         Inventory inventory = inventoryRepository.findByExpireDateAndSupplierAndSkuQuantityUnit(
-                                adviceLine.getExpire_date(),
-                                advice.getSupplier(),
-                                adviceLine.getSku_quantity_unit());
-                        log.info("Null or No:");
-                        log.info(String.valueOf(!Objects.isNull(inventory)));
-                        if(!Objects.isNull(inventory) && !is_inventory_filled_for_this_advice_line.get()){
-                            is_inventory_filled_for_this_advice_line.set(true);
-                            log.info("Value of count global" + inventory.getCount_global());
-                            log.info("Value of quantity count" + adviceLine.getQuantity());
-                            log.info("Value of count: " + (inventory.getCount_global() + adviceLine.getQuantity()));
-                            inventory.setCount_global(inventory.getCount_global()+adviceLine.getQuantity());
-                            log.info("Value of count2: " + (inventory.getCount_global()));
+                                adviceLine.getExpire_date(), advice.getSupplier(), adviceLine.getSku_quantity_unit());
 
+                        boolean isInventoryExists = inventoryExists(inventory);
+
+                        if(isInventoryExists && !is_inventory_filled_for_this_advice_line.get()){
+                            is_inventory_filled_for_this_advice_line.set(true);
+                            updateInventory(inventoryRepository, inventory, adviceLine);
                         }
+
                         // if not there, create one
                         else if (!is_inventory_filled_for_this_advice_line.get()){
                             is_inventory_filled_for_this_advice_line.set(true);
-                            inventory = new Inventory();
-                            inventory.setExpireDate(adviceLine.getExpire_date());
-                            inventory.setSupplier(advice.getSupplier());
-                            inventory.setSkuQuantityUnit(adviceLine.getSku_quantity_unit());
-                            inventory.setCount_global(adviceLine.getQuantity());
+                            addInventory(inventoryRepository, supplier, adviceLine);
 
                         }
                         // create inventory load unit
-                        InventoryLoadUnit inventoryLoadUnit = new InventoryLoadUnit();
-                        inventoryLoadUnit.setInventory(inventory);
-                        inventoryLoadUnit.setLoad_unit(loadUnit);
-                        inventoryLoadUnit.setPrice(new BigDecimal(3));
-
-                        inventoryLoadUnitRepository.save(inventoryLoadUnit);
-                        inventoryRepository.save(inventory);
-
+                        createInventoryLoadUnit(inventory, loadUnit, inventoryLoadUnitRepository);
                     });
-
                 });
-
             }
-
         });
 
 
+    }
+
+    private void createInventoryLoadUnit(Inventory inventory, LoadUnit loadUnit, InventoryLoadUnitRepository inventoryLoadUnitRepository){
+        InventoryLoadUnit inventoryLoadUnit = new InventoryLoadUnit();
+        inventoryLoadUnit.setInventory(inventory);
+        inventoryLoadUnit.setLoad_unit(loadUnit);
+        inventoryLoadUnit.setPrice(new BigDecimal(3));
+
+        inventoryLoadUnitRepository.save(inventoryLoadUnit);
+    }
+
+    private boolean inventoryExists(Inventory inventory){
+
+        return !Objects.isNull(inventory);
+
+    }
+
+    private void addInventory(InventoryRepository inventoryRepository, Supplier supplier, AdviceLine adviceLine){
+
+        Inventory inventory = new Inventory();
+        inventory.setExpireDate(adviceLine.getExpire_date());
+        inventory.setSupplier(supplier);
+        inventory.setSkuQuantityUnit(adviceLine.getSku_quantity_unit());
+        inventory.setCount_global(adviceLine.getQuantity());
+        inventoryRepository.save(inventory);
+    }
+
+    private void updateInventory(InventoryRepository inventoryRepository, Inventory inventory, AdviceLine adviceLine){
+        log.info("Value of count global" + inventory.getCount_global());
+        log.info("Value of quantity count" + adviceLine.getQuantity());
+        log.info("Value of count: " + (inventory.getCount_global() + adviceLine.getQuantity()));
+        inventory.setCount_global(inventory.getCount_global()+adviceLine.getQuantity());
+        log.info("Value of count2: " + (inventory.getCount_global()));
+        inventoryRepository.save(inventory);
+    }
+
+    private void createAdviceLineLoadUnit(LoadUnit loadUnit,LoadUnitTypeSkuQu loadUnitTypeSkuQu, AtomicInteger adviceLineQuantity){
+        AdviceLineLoadUnit adviceLineLoadUnit = new AdviceLineLoadUnit();
+        adviceLineLoadUnit.setAdviceLine(adviceLine);
+        adviceLineLoadUnit.setLoadUnit(loadUnit);
+        System.out.println(loadUnitTypeSkuQu.getQuantity());
+
+        if (loadUnitTypeSkuQu.getQuantity() > adviceLineQuantity.get()) {
+            adviceLineLoadUnit.setAvailable_quantity(adviceLineQuantity.get());
+        } else {
+            adviceLineLoadUnit.setAvailable_quantity(loadUnitTypeSkuQu.getQuantity());
+            System.out.println(loadUnitTypeSkuQu.getQuantity());
+        }
+        System.out.println(3);
+
+        adviceLineLoadUnitRepository.save(adviceLineLoadUnit);
     }
 
     private AdviceDto mapToDto(Advice advice){
