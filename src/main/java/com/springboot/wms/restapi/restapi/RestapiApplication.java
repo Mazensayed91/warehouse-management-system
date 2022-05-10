@@ -11,8 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableScheduling
 public class RestapiApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(RestapiApplication.class, args);
+
 	}
 
 	@Bean
@@ -20,3 +22,4 @@ public class RestapiApplication {
 		return new BCryptPasswordEncoder();
 	}
 }
+

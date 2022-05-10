@@ -181,7 +181,6 @@ public class AdviceServiceImpl implements AdviceService {
                             log.info("Value of count: " + (inventory.getCount_global() + adviceLine.getQuantity()));
                             inventory.setCount_global(inventory.getCount_global()+adviceLine.getQuantity());
                             log.info("Value of count2: " + (inventory.getCount_global()));
-                            inventoryRepository.save(inventory);
 
                         }
                         // if not there, create one
@@ -193,7 +192,6 @@ public class AdviceServiceImpl implements AdviceService {
                             inventory.setSkuQuantityUnit(adviceLine.getSku_quantity_unit());
                             inventory.setCount_global(adviceLine.getQuantity());
 
-                            inventoryRepository.save(inventory);
                         }
                         // create inventory load unit
                         InventoryLoadUnit inventoryLoadUnit = new InventoryLoadUnit();
@@ -202,6 +200,8 @@ public class AdviceServiceImpl implements AdviceService {
                         inventoryLoadUnit.setPrice(new BigDecimal(3));
 
                         inventoryLoadUnitRepository.save(inventoryLoadUnit);
+                        inventoryRepository.save(inventory);
+
                     });
 
                 });

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -44,7 +45,6 @@ public class Inventory {
     private Supplier supplier;
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<InventoryLoadUnit> inventory_units = new HashSet<>();
-
+    private List<InventoryLoadUnit> inventory_units;
 
 }
