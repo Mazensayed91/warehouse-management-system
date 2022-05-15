@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,14 +30,17 @@ public class LoadUnit {
     @SequenceGenerator(name = "id_Sequence", sequenceName = "ID_SEQ")
     private Long id;
 
+    @Column(name = "count", nullable = true)
+    private Integer count = 0;
+
     @OneToMany(mappedBy = "load_unit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<InventoryLoadUnit> inventory_load_units = new HashSet<>();
+    private List<InventoryLoadUnit> inventory_load_units;
 
     @OneToMany(mappedBy = "loadUnit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AdviceLineLoadUnit> advice_line_load_unit_id = new HashSet<>();
+    private List<AdviceLineLoadUnit> advice_line_load_unit_id;
 
     @OneToMany(mappedBy = "load_unit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderLineLoadUnit> order_line_load_unit_id = new HashSet<>();
+    private List<OrderLineLoadUnit> order_line_load_unit_id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "load_unit_type_id", referencedColumnName = "id")

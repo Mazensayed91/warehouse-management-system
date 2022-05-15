@@ -6,4 +6,5 @@ import lombok.Data;
 public class LoadUnitDto {
 
     private long id;
+    private Integer count;
 }

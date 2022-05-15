@@ -148,15 +148,34 @@ public class AdviceServiceImpl implements AdviceService {
                         LoadUnitTypeSkuQu loadUnitTypeSkuQu = loadUnitTypeSkuQuRepository.findBySkuQuantityUnitIdAndLoadUnitTypeId(
                                 adviceLine.getSku_quantity_unit().getId(), loadUnit.getLoad_unit_type().getId());
 
+                        // check if the load unit has space
+                        int loadUnitCount;
+                        if(loadUnit.getCount() == null){
+                            loadUnitCount = 0;
+                        }
+                        else{
+                            loadUnitCount = loadUnit.getCount();
+                        }
+                        if(loadUnitCount >= loadUnitTypeSkuQu.getQuantity()) {
+                            return;
+                        }
 
                         // check if this load unit type can hold 1 or more sku qu unit and also there are more sku qu units
                         if (loadUnitTypeSkuQu.getQuantity() > 0 && adviceLineQuantity.get() > 0) {
-                            createAdviceLineLoadUnit(loadUnit, loadUnitTypeSkuQu, adviceLineQuantity);
+                            createAdviceLineLoadUnit(loadUnit, loadUnitTypeSkuQu, adviceLine, adviceLineQuantity);
 
+                            // update load unit quantity
                             // update advice line quantity (as some skuqus are saved in the proper load units)
-                            adviceLineQuantity.addAndGet(-loadUnitTypeSkuQu.getQuantity());
+                            if(loadUnitCount + Math.min(adviceLineQuantity.get(), loadUnitTypeSkuQu.getQuantity()) > loadUnitTypeSkuQu.getQuantity()){
+                                loadUnit.setCount(loadUnitTypeSkuQu.getQuantity());
+                                adviceLineQuantity.addAndGet(-(loadUnitTypeSkuQu.getQuantity() - loadUnitCount));
 
-                            // update flag for creating inventory load units (flag is 0 if the advice quantity is 0)
+                            }
+                            else {
+                                loadUnit.setCount(Math.min(adviceLineQuantity.get(), loadUnitTypeSkuQu.getQuantity()) + loadUnitCount);
+                                adviceLineQuantity.addAndGet(-loadUnitTypeSkuQu.getQuantity());
+                            }
+                            loadUnitRepository.save(loadUnit);
                         }
 
                         // fill inventory
@@ -234,7 +253,7 @@ public class AdviceServiceImpl implements AdviceService {
         inventoryRepository.save(inventory);
     }
 
-    private void createAdviceLineLoadUnit(LoadUnit loadUnit,LoadUnitTypeSkuQu loadUnitTypeSkuQu, AtomicInteger adviceLineQuantity){
+    private void createAdviceLineLoadUnit(LoadUnit loadUnit,LoadUnitTypeSkuQu loadUnitTypeSkuQu, AdviceLine adviceLine, AtomicInteger adviceLineQuantity){
         AdviceLineLoadUnit adviceLineLoadUnit = new AdviceLineLoadUnit();
         adviceLineLoadUnit.setAdviceLine(adviceLine);
         adviceLineLoadUnit.setLoadUnit(loadUnit);
