@@ -148,12 +148,15 @@ public class AdviceServiceImpl implements AdviceService {
                         LoadUnitTypeSkuQu loadUnitTypeSkuQu = loadUnitTypeSkuQuRepository.findBySkuQuantityUnitIdAndLoadUnitTypeId(
                                 adviceLine.getSku_quantity_unit().getId(), loadUnit.getLoad_unit_type().getId());
 
-                        // check if this load unit type can hold 1 or more sku qu unit
+
+                        // check if this load unit type can hold 1 or more sku qu unit and also there are more sku qu units
                         if (loadUnitTypeSkuQu.getQuantity() > 0 && adviceLineQuantity.get() > 0) {
                             createAdviceLineLoadUnit(loadUnit, loadUnitTypeSkuQu, adviceLineQuantity);
-                            System.out.println(4);
+
                             // update advice line quantity (as some skuqus are saved in the proper load units)
                             adviceLineQuantity.addAndGet(-loadUnitTypeSkuQu.getQuantity());
+
+                            // update flag for creating inventory load units (flag is 0 if the advice quantity is 0)
                         }
 
                         // fill inventory
@@ -166,16 +169,27 @@ public class AdviceServiceImpl implements AdviceService {
                         if(isInventoryExists && !is_inventory_filled_for_this_advice_line.get()){
                             is_inventory_filled_for_this_advice_line.set(true);
                             updateInventory(inventoryRepository, inventory, adviceLine);
+
+                            // create inventory load unit
+                            createInventoryLoadUnit(inventory, loadUnit, inventoryLoadUnitRepository);
+
+                            System.out.println("Here is quantity: " + loadUnitTypeSkuQu.getQuantity());
+                            System.out.println("Here is quantity: " + adviceLineQuantity);
+
                         }
 
                         // if not there, create one
                         else if (!is_inventory_filled_for_this_advice_line.get()){
                             is_inventory_filled_for_this_advice_line.set(true);
-                            addInventory(inventoryRepository, supplier, adviceLine);
+                            Inventory createdInventory = addInventory(inventoryRepository, supplier, adviceLine);
+
+                            // create inventory load unit
+                            createInventoryLoadUnit(createdInventory, loadUnit, inventoryLoadUnitRepository);
+
+                            System.out.println("Here is quantity: " + loadUnitTypeSkuQu.getQuantity());
+                            System.out.println("Here is quantity: " + adviceLineQuantity);
 
                         }
-                        // create inventory load unit
-                        createInventoryLoadUnit(inventory, loadUnit, inventoryLoadUnitRepository);
                     });
                 });
             }
@@ -199,7 +213,7 @@ public class AdviceServiceImpl implements AdviceService {
 
     }
 
-    private void addInventory(InventoryRepository inventoryRepository, Supplier supplier, AdviceLine adviceLine){
+    private Inventory addInventory(InventoryRepository inventoryRepository, Supplier supplier, AdviceLine adviceLine){
 
         Inventory inventory = new Inventory();
         inventory.setExpireDate(adviceLine.getExpire_date());
@@ -207,6 +221,8 @@ public class AdviceServiceImpl implements AdviceService {
         inventory.setSkuQuantityUnit(adviceLine.getSku_quantity_unit());
         inventory.setCount_global(adviceLine.getQuantity());
         inventoryRepository.save(inventory);
+
+        return inventory;
     }
 
     private void updateInventory(InventoryRepository inventoryRepository, Inventory inventory, AdviceLine adviceLine){
